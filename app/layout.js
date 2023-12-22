@@ -1,8 +1,10 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
+import './style.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/footer'
 import ReduxProvider from '@/provider/redux/ReduxProvider'
+import MainLayout from '@/layout/MainLayout'
 import NextTopLoader from 'nextjs-toploader';
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +15,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
+
     <ReduxProvider>
+      <MainLayout>
     <html lang="en">
       <body className={inter.className}>
         <Navbar/>
@@ -24,6 +28,7 @@ export default function RootLayout({ children }) {
         <Footer/>
         </body>
     </html>
+    </MainLayout>
     </ReduxProvider>
   )
 }

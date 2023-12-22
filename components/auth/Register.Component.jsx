@@ -1,10 +1,17 @@
 "use client";
 import React from 'react'
 import {Formik,Form,Field,ErrorMessage} from'formik'
+import {toast} from 'react-toastify'
 import * as yup from'yup'
 import Link from 'next/link';
+import { useRegisterUserMutation, useUserProfileQuery } from '@/provider/redux/query/Auth.query';
+import { CgSpinner } from "react-icons/cg";
+import { useRouter } from 'next/navigation';
 const REgisterComponent = () => {
 
+    const {refetch} = useUserProfileQuery()
+    const [RegisterUser,RegisterUserResponse] = useRegisterUserMutation();
+    const router = useRouter()
     const validationSchame = yup.object({
         name:yup.string().required("Name is required").trim(),
         email:yup.string().email("Email must be valid").required("Email is required").trim().lowercase(),
@@ -12,13 +19,27 @@ const REgisterComponent = () => {
     })
     
     const onSubmitHandler = async(e,{resetForm})=>{
-        console.log(e);
+        // console.log("Register come");
+       try {
+        // console.log(e);
+        const {data,error} =await RegisterUser(e);
+        if(error){
+            toast.error(error?.data?.error);
+            return
+        }
+        await refetch()
+        toast.success(data?.msg);
+        router.push("/")
         resetForm()
+       } catch (error) {
+        toast.error(error?.message);
+
+       }
     }
 
   return (
     <>
-                <Formik validationSchema={validationSchame} initialValues={{email:'',password:''}} onSubmit={onSubmitHandler} > 
+                <Formik validationSchema={validationSchame} initialValues={{email:'',password:'',name:''}} onSubmit={onSubmitHandler} > 
                     <Form className='md:w-[44%] w-[96%] mx-auto py-10'>
                     <div className="mb-3">
                             <label htmlFor="name">Name</label>
@@ -36,7 +57,7 @@ const REgisterComponent = () => {
                             <ErrorMessage component={'p'} className='text-red-500' name='password' />
                         </div>
                         <div className="mb-3 flex  justify-between">
-                                    <button className='btn'>Register</button>
+                        <button  disabled={RegisterUserResponse.isLoading} className='btn'>{RegisterUserResponse.isLoading?<CgSpinner className='text-white animate-spin' />:`Register`}</button>
                                   
                         </div>
                         <div className="mb-3">

@@ -7,17 +7,54 @@ import Sidebar from './components/Sidebar';
 import { CiSearch } from "react-icons/ci";
 import MobileNav from './components/MobileNav';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import { RxAvatar } from "react-icons/rx";
+
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useDispatch, useSelector } from 'react-redux';
+import { removeUser } from '@/provider/redux/slice/User.slice';
+import { useLogoutUserMutation } from '@/provider/redux/query/Auth.query';
+import { Erica_One } from 'next/font/google';
 
 const Navbar = () => {
-
+const AuthUser = useSelector((store)=>store?.userSlice?.user);
+const dispatch = useDispatch()
   const [isOpen,setIsOpen] = useState(false);
   const [isMobileNav,setIsMobileNav] = useState(false);
+  const [logoutUser] = useLogoutUserMutation()
   const [search,setSearch] = useState('');
   const router = useRouter()
+  // console.log({AuthUser})
 
 
   const isSidebarOpen = (d)=>{setIsOpen(d)}
+
+  const LogoutHandler = async()=>{
+        try {
+                // api 
+                const {data,error} = await logoutUser()
+                if(error){
+                  console.log(error);
+                  return
+                }
+
+                toast.success(data.msg)
+
+                dispatch(removeUser())
+        } catch (error) {
+          toast.error(error.message)
+        }
+  }
 
   const SearchHandler = (e)=>{
     e.preventDefault()
@@ -30,16 +67,18 @@ const Navbar = () => {
 
   return (
       <>
+      <ToastContainer/>
           <header className='shadow py-4 '>
 
 
 
               <nav className="w-[95%] mx-auto flex items-center justify-between">
 
-              <button className='flex flex-col md:hidden' onClick={()=>setIsMobileNav(!isMobileNav)}>
-                <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? 'rotate-45 translate-y-[9px]':'rotate-0'} h-2 border-b-black border-b`}></span>
-                <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? 'hidden':''} h-2 border-b-black border-b`}></span>
-                <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? '-rotate-45':'rotate-0'} h-2 border-b-black border-b`}></span>
+              <button className={`flex flex-col md:hidden  ${isMobileNav?
+              'z-[9] ':'z-0'}`} onClick={()=>setIsMobileNav(!isMobileNav)}>
+                <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? 'rotate-45 translate-y-[9px]  border-b-white':'rotate-0 border-b-black'} h-2  border-b`}></span>
+                <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? 'hidden  border-b-white':'border-b-black'} h-2  border-b`}></span>
+                <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? '-rotate-45  border-b-white':'rotate-0 border-b-black '} h-2 border-b`}></span>
               </button>
 
                 <Image src={"/bugwear.png"} priority={true} alt='logo' width={1000} height={1000} className='w-44' />
@@ -73,9 +112,28 @@ const Navbar = () => {
                   <LiaShoppingBagSolid className='text-3xl cursor-pointer'  onClick={()=>isSidebarOpen(true)}  />
 
                   </li>
-                  <li>
+                 { !AuthUser?<li>
                     <Link className='btn' href={"/login"}>Login</Link>
                   </li>
+            :
+                  <li>
+                  <DropdownMenu>
+  <DropdownMenuTrigger>     <RxAvatar className='text-3xl cursor-pointer' /></DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem>
+      <Link href={"/profile"}>Profile</Link>
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+    <Link href={"/orders"}>Orders</Link>
+
+    </DropdownMenuItem>
+    <DropdownMenuItem onClick={LogoutHandler} >Logout</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>
+               
+                  </li>}
                 </ul>
               </nav>
 

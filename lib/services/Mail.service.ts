@@ -12,7 +12,7 @@ host:'smtp.gmail.com'
 
 
 
-export const SendEmail = async({html,subject,to})=>{
+export const SendEmail = async({html,subject,to}:any)=>{
             transport.sendMail({
                 from:'bugswear.com',
                 to:to,

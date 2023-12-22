@@ -3,16 +3,37 @@ import React from 'react'
 import {Formik,Form,Field,ErrorMessage} from'formik'
 import * as yup from'yup'
 import Link from 'next/link';
+import { useLoginUserMutation, useUserProfileQuery } from '@/provider/redux/query/Auth.query';
+import { useRouter } from 'next/navigation';
+import { CgSpinner } from "react-icons/cg";
+import {toast} from 'react-toastify'
 const LoginComponent = () => {
 
+    const {refetch} = useUserProfileQuery()
+    const [LoginUser,LoginUserResponse] = useLoginUserMutation()
+const router = useRouter()
     const validationSchame = yup.object({
         email:yup.string().email("Email must be valid").required("Email is required").trim().lowercase(),
         password:yup.string().min(6,"Password should greater than 6 characters").required("Password is required").trim()
     })
     
     const onSubmitHandler = async(e,{resetForm})=>{
-        console.log(e);
-        resetForm()
+        try {
+            // console.log(e);
+            const {data,error} =await LoginUser(e);
+            if(error){
+                toast.error(error?.data?.error);
+                return
+            }
+            toast.success(data?.msg);
+            // route /
+          await  refetch()
+            router.push("/");
+            resetForm()
+           } catch (error) {
+            toast.error(error?.message);
+    
+           }
     }
 
   return (
@@ -30,7 +51,7 @@ const LoginComponent = () => {
                             <ErrorMessage component={'p'} className='text-red-500' name='password' />
                         </div>
                         <div className="mb-3 flex  justify-between">
-                                    <button className='btn'>Login</button>
+                                    <button type='submit' disabled={LoginUserResponse.isLoading} className='btn'>{LoginUserResponse.isLoading?<CgSpinner className='text-white animate-spin' />:`Login`}</button>
                                     <Link className='hover:text-[--main-color] animate' href={"/"}>Forget Password ?</Link>
                         </div>
                         <div className="mb-3">
