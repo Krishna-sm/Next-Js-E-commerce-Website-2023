@@ -50,13 +50,13 @@ Schema.pre("save",async function(next){
 
 
 // methods
-Schema.methods.ComparePassword = async function(string_password){
+Schema.methods.ComparePassword = async function(string_password:string){
     const user = this;
     const isMatch = await bcrypt.compare(string_password,user.password);
     return isMatch;
 }
 
-Schema.methods.UpdatePassword = async function(string_password){
+Schema.methods.UpdatePassword = async function(string_password:string){
  
     const hashPassword = await bcrypt.hash(string_password,10);
     return hashPassword;

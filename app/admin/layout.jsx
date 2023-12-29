@@ -3,7 +3,11 @@ import AdminLayout from '@/layout/AdminLayout'
 
 const AdminSidebar = ({children}) => {
   return (
-    <AdminLayout>{children}</AdminLayout>
+    <AdminLayout>
+      <div className="mx-5 my-3">
+        {children}
+      </div>
+    </AdminLayout>
   )
 }
 

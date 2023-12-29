@@ -24,7 +24,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '@/provider/redux/slice/User.slice';
 import { useLogoutUserMutation } from '@/provider/redux/query/Auth.query';
-import { Erica_One } from 'next/font/google';
 
 const Navbar = () => {
 const AuthUser = useSelector((store)=>store?.userSlice?.user);
@@ -123,7 +122,7 @@ const dispatch = useDispatch()
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuItem>
-      <Link href={"/profile"}>Profile</Link>
+      <Link href={AuthUser.role ==="admin"?"/admin":"/profile"}>Profile</Link>
     </DropdownMenuItem>
     <DropdownMenuItem>
     <Link href={"/orders"}>Orders</Link>
