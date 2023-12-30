@@ -116,9 +116,9 @@ const dispatch = useDispatch()
                   </li>
             :
                   <li>
-                  <DropdownMenu>
-  <DropdownMenuTrigger>     <RxAvatar className='text-3xl cursor-pointer' /></DropdownMenuTrigger>
-  <DropdownMenuContent>
+                  <DropdownMenu  > 
+  <DropdownMenuTrigger  >     <RxAvatar className='text-3xl cursor-pointer' /></DropdownMenuTrigger>
+  <DropdownMenuContent >
     <DropdownMenuLabel>My Account</DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuItem>
