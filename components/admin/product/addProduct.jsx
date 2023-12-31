@@ -1,5 +1,6 @@
 "use client";
-import { useAddCategoryMutation, useGetCategoriesQuery } from '@/provider/redux/query/AdminCategory.query';
+import { useGetCategoriesQuery } from '@/provider/redux/query/AdminCategory.query';
+import { useAddproductMutation } from '@/provider/redux/query/AdminProduct.query';
 import { Form, Formik,ErrorMessage,Field } from 'formik'
 import React, { useEffect } from 'react'
 import { toast } from 'react-toastify';
@@ -7,7 +8,7 @@ import * as yup from 'yup'
 
 const AddProduct = () => {
 
-  const [addCatrogoryFn,addCatrogoryFnResponse] = useAddCategoryMutation()
+  const [addproductFn,addProductResponse] = useAddproductMutation()
   const {isLoading,data,isError,refetch} = useGetCategoriesQuery()
 
   useEffect(()=>{
@@ -16,13 +17,13 @@ const AddProduct = () => {
 
     const validationSchema = yup.object({
         categoryName:yup.string().required("Category is Required"), 
-        short_desc:yup.string().required("short_desc is Required"), //50
-        long_desc:yup.string().required("long_desc is Required"), //300
+        short_desc:yup.string().max(50,"short desc must be in 50 characters").required("short_desc is Required"), //50
+        long_desc:yup.string().max(300,"long desc must be in 50 characters").required("long_desc is Required"), //300
         productName:yup.string().required("productName is Required"),
-        rating:yup.number().required("Rating is Required"), //10
-        price:yup.number().required("price is Required"), 
+        rating:yup.number().required("Rating is Required").min(0,"rating must be grater than 0").max(10,"rating must be less than 10"), //10
+        price:yup.number().required("price is Required").min(1,"price should be grater than 1"), 
         image:yup.mixed().required("category image is required") ,
-        discount:yup.number().optional(), //100%
+        discount:yup.number().optional().min(0,"discount should be grater than 0%").max(100,"discount should be less than 100%"), //100%
     })
 
 
@@ -40,13 +41,19 @@ const AddProduct = () => {
 
     const onSubmitHandler = async(e,{resetForm})=>{
         try {
-                // console.log({e});
+              
                 const form = new FormData();
                 form.append("image",e.image)
-                form.append("category_name",e.categoryName)
+                form.append("categoryName",e.categoryName)
+                form.append("productName",e.productName)
+                form.append("rating",e.rating)
+                form.append("short_desc",e.short_desc)
+                form.append("long_desc",e.long_desc)
+                form.append("discount",e.discount)
+                form.append("price",e.price)
 
 
-                const {data,error} = await addCatrogoryFn(form);
+                const {data,error} = await addproductFn(form);
                 if(error){
                   toast.error(error.data?.error);
                   return
@@ -159,7 +166,7 @@ const AddProduct = () => {
     
 
     <div className="w-full   px-3 mb-6 md:mb-0">
-            <button disabled={addCatrogoryFnResponse.isLoading} type='submit' className="text-white px-4 py-2 rounded-sm bg-black">{addCatrogoryFnResponse.isLoading?'loading...':`Add Category`}</button>
+            <button disabled={addProductResponse.isLoading} type='submit' className="text-white px-4 py-2 rounded-sm bg-black">{addProductResponse.isLoading?'loading...':`Add Product`}</button>
      
     </div>
     

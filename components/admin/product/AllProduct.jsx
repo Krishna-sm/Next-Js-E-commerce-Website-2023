@@ -1,17 +1,18 @@
 "use client";
 import { useEditCategoryMutation, useGetCategoriesQuery,useDeleteCategoryMutation } from '@/provider/redux/query/AdminCategory.query';
+import { useDeleteProductMutation, useEditProductMutation, useGetProductsQuery } from '@/provider/redux/query/AdminProduct.query';
 import Image from 'next/image';
 import React, { useEffect } from 'react'
 import { FcCheckmark ,FcCancel} from "react-icons/fc";
 import { toast } from 'react-toastify';
-const CatrorgyCard = ({data,index,refetch})=>{
+const ProductCard = ({data,index,refetch})=>{
 
-  const [editCategory,editCategoryResponse] = useEditCategoryMutation();
-  const [deleteCategory,deleteCategoryResponse] = useDeleteCategoryMutation();
+  const [editProduct,editProductResponse] = useEditProductMutation();
+  const [deleteProduct,deleteProductResponse] = useDeleteProductMutation();
   const id = data?._id
   const EditCategoryHandler = async()=>{
     try {
-      const {data,error} = await editCategory(id)
+      const {data,error} = await editProduct(id)
 
       if(error){
         toast.error(error.data?.error);
@@ -28,7 +29,7 @@ refetch()
   }
     const DeleteCategoryHandler = async()=>{
     try {
-      const {data,error} = await deleteCategory(id)
+      const {data,error} = await deleteProduct(id)
 
       if(error){
         toast.error(error.data?.error);
@@ -44,20 +45,21 @@ refetch()
     }
   }
 
+
   return <tr>
 <td className='border text-center'>{index}</td>
 <td className='border text-center capitalize'>{data?.name}</td>
-<td className='border text-center'>t-shirt</td>
+<td className='border text-center'>{data.category?.name}</td>
 <td className='border text-center flex justify-center'>
   {}
     <Image src={data?.image?.image_url} alt={'image'+data?._id} width={200} height={200} className='w-24' />
 </td>
-<td className='border text-center'>500</td>
-<td className='border text-center'>3.5</td>
+<td className='border text-center'>{data.price}</td>
+<td className='border text-center'>{data.rating}</td>
 <td className='border  text-center '>{data?.isPublish?<FcCheckmark/>:<FcCancel/>}</td>
 <td className='border text-center'>
-  <button  onClick={EditCategoryHandler} disabled={editCategoryResponse.isLoading} className="btn px-3 py-2 rounded-sm text-white mx-2">{editCategoryResponse.isLoading?'loading...':`Edit`}</button>
-  <button   disabled={deleteCategoryResponse.isLoading} onClick={DeleteCategoryHandler} className="bg-black px-3 py-2 rounded-sm text-white mx-2">{deleteCategoryResponse.isLoading?
+  <button  onClick={EditCategoryHandler} disabled={editProductResponse.isLoading} className="btn px-3 py-2 rounded-sm text-white mx-2">{editProductResponse.isLoading?'loading...':`Edit`}</button>
+  <button   disabled={deleteProductResponse.isLoading} onClick={DeleteCategoryHandler} className="bg-black px-3 py-2 rounded-sm text-white mx-2">{deleteProductResponse.isLoading?
   'loading...':`Delete`}</button>
 </td>
 </tr>
@@ -65,7 +67,7 @@ refetch()
 
 const AllProduct = () => {
 
-  const {isLoading,data,isError,refetch} = useGetCategoriesQuery()
+  const {isLoading,data,isError,refetch} = useGetProductsQuery()
 
   
   useEffect(()=>{
@@ -103,8 +105,8 @@ const AllProduct = () => {
   <tbody>
    
         {
-          data && data.category && data.category.length>0 && data.category.map((cur,i)=>{
-            return <CatrorgyCard key={i} data={cur} index={i+1}  refetch={refetch} />
+          data && data.product && data.product.length>0 && data.product.map((cur,i)=>{
+            return <ProductCard key={i} data={cur} index={i+1}  refetch={refetch} />
           })
         }
 

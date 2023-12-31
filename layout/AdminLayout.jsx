@@ -115,9 +115,9 @@ export default function AdminLayout({children}) {
 
                 <div className="w-full flex">
                 <div id="Main" className={`${show ? 'translate-x-0 z-[9]' : '-translate-x-full z-0'} xl:rounded-r transform  fixed md:relative  xl:translate-x-0  ease-in-out transition duration-500 flex justify-start items-start h-screen overflow-y-auto  w-full sm:w-64 bg-gray-900 flex-col`}>
-                <div className="hidden xl:flex justify-start p-6 items-center space-x-3">
+                <Link href="/admin" className="hidden xl:flex justify-start p-6 items-center space-x-3">
                 <Image src={"/bugwear.png"} priority={true} alt='logo' width={1000} height={1000} className='w-44' />
-                </div>
+                </Link>
                 <div className="mt-6 flex flex-col justify-start items-center  pl-4 w-full border-gray-600 border-b space-y-3 pb-5 ">
                     {/* fasf f  http://localhost:3000/admin/*  */}
                     <SingleMenu Icon={MdDashboard} title="Dashboard" path="/" />

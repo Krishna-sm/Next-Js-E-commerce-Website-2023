@@ -55,11 +55,6 @@ const Schema = new mongoose.Schema({
         required:true,
         trim:true
     },
-     long_desc:{
-        type:String,
-        required:true,
-        trim:true
-    },
       discount:{
         type:Number,
         trim:true,

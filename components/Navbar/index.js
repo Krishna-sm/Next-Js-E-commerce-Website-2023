@@ -24,8 +24,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { removeUser } from '@/provider/redux/slice/User.slice';
 import { useLogoutUserMutation } from '@/provider/redux/query/Auth.query';
+import { useGetCategoriesQuery } from '@/provider/redux/query/public.query';
 
 const Navbar = () => {
+
+  const { isLoading, data } = useGetCategoriesQuery();
 const AuthUser = useSelector((store)=>store?.userSlice?.user);
 const dispatch = useDispatch()
   const [isOpen,setIsOpen] = useState(false);
@@ -80,7 +83,7 @@ const dispatch = useDispatch()
                 <span className={`block w-[36px] transition-all duration-300 ${isMobileNav? '-rotate-45  border-b-white':'rotate-0 border-b-black '} h-2 border-b`}></span>
               </button>
 
-                <Image src={"/bugwear.png"} priority={true} alt='logo' width={1000} height={1000} className='w-44' />
+                <Link href={"/"}><Image src={"/bugwear.png"} priority={true} alt='logo' width={1000} height={1000} className='w-44' /></Link>
 
                 <form onSubmit={SearchHandler} className='w-1/2 hidden  md:flex items-center px-3 boder ring-black ring-[.3px]'>
                     <input value={search} onChange={e=>setSearch(e.target.value)} type="text" name="" className='w-full  py-3 outline-none border-none' id="" placeholder='Search ...' />
@@ -95,18 +98,20 @@ const dispatch = useDispatch()
                   <li>
                     <Link className='transition-all duration-300 hover:text-[--main-color]' href={"/"}>Home</Link>
                   </li>
-                  <li>
-                    <Link className='transition-all duration-300 hover:text-[--main-color]' href={"/t-shirt"}>T-shirt</Link>
-                  </li>
-                  <li>
-                    <Link className='transition-all duration-300 hover:text-[--main-color]' href={"/mugs"}>Mugs</Link>
-                  </li>
-                  <li>
-                    <Link className='transition-all duration-300 hover:text-[--main-color]' href={"/stickers"}>Stickers</Link>
-                  </li>
-                  <li>
-                    <Link className='transition-all duration-300 hover:text-[--main-color]' href={"/hoodies"}>Hoodies</Link>
-                  </li>
+                
+                {!isLoading && data && data.category && data.category.map((cur,i)=>{
+                    return (
+                      <li key={i}>
+                        <Link
+                          className="transition-all duration-300 hover:text-[--main-color] capitalize"
+                          href={`/${cur.slug}`}
+                        >
+                         {cur.name}
+                        </Link>
+                      </li>
+                    );
+                })  
+                }
                   <li>
                   <LiaShoppingBagSolid className='text-3xl cursor-pointer'  onClick={()=>isSidebarOpen(true)}  />
 
