@@ -13,12 +13,26 @@ export const PublicQuery = createApi({
         method: "GET",
       }),
     }),
-  
+
+    getproducts: builder.query({
+      query: (obj) => ({
+        url: `/product/${obj}`,
+        method: "GET",
+      }),
+    }),
+    getproduct: builder.query({
+      query: (obj) => ({
+        url: `/product/${obj.slug}/${obj.product}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined AuthApi
 export const {
-    useGetCategoriesQuery
+    useGetCategoriesQuery,
+    useGetproductsQuery,
+    useGetproductQuery
 } = PublicQuery;
