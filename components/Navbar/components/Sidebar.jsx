@@ -70,25 +70,25 @@ refetch()
                                   <p className="text-xl font-bold">My Cart</p>
                                     <AiOutlineCloseCircle onClick={()=>state.isSidebarOpen(false)} className='cursor-pointer'/>
                                 </div>
-                                <u className="">
+                                <ul className="">
                                     {
                                       data && data.cart && data.cart.length>0 ? data.cart.map((cur,i)=>{
                                         return <ProductCard id={cur._id} refetch={refetch} image={cur.product.image.image_url} qty={cur.qty}name={cur.product.name} price={cur.product.price} key={i} />
                                       }):<div className='flex flex-col justify-center items-center py-10'>
                                    <HiOutlineShoppingCart className="text-9xl text-white" />
-                                  <p className='text-white font-semibold text-xl'>Cart is Empty</p>
+                                  <p className='text-white font-semibold text-xl '>Cart is Empty</p>
                       
                                   </div>
                                     }
                                 
-                                       
+                                     
 
                                   {/* <div className='flex flex-col justify-center items-center py-10'>
                                    <HiOutlineShoppingCart className="text-9xl text-white" />
                                   <p className='text-white font-semibold text-xl'>Cart is Empty</p>
                       
                                   </div> */}
-                                </u>
+                                </ul>
 
 </div>
     </>
