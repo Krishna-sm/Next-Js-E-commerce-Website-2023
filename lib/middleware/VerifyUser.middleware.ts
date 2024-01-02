@@ -6,7 +6,7 @@ export const isAuth = async(request:NextRequest)=>{
     const token = await request.cookies.get("auth")
     if(!token){
                 // error
-                throw new ApiError(httpStatus.UNAUTHORIZED,"Please login first");
+                throw new ApiError(205," ");
     }
     const user = await VerifyToken(token.value);
     if(!user){

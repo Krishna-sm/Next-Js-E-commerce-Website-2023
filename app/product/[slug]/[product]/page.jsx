@@ -1,4 +1,5 @@
 "use client";
+import { useAddToCartMutation } from '@/provider/redux/query/cart.query';
 import { useGetproductQuery } from '@/provider/redux/query/public.query'
 import React from 'react'
 
@@ -6,6 +7,9 @@ import ReactStars from "react-rating-stars-component";
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 const SingleProductPage = ({params}) => {
+
+
+ const [AddToCartfn,AddToCartResponse] = useAddToCartMutation()
 
   const  user = useSelector((store)=>store.userSlice.user)
 
@@ -29,7 +33,13 @@ const SingleProductPage = ({params}) => {
         toast.error("Plese login first");
         return
       }
-          toast.success("item addded cart "+product_id)
+
+      const {data,error} =await AddToCartfn(product_id)
+      if(error){
+        toast.error(error?.data?.error);
+        return 
+      }
+      toast.success(data.msg);
     } catch (error) {
       toast.error(error.message);
     }
@@ -55,7 +65,7 @@ const SingleProductPage = ({params}) => {
     edit={false}
     
     size={24}
-    activeColor="#151515"
+    activeColor="#fcba03"
   />
 
           </span>
@@ -65,8 +75,7 @@ const SingleProductPage = ({params}) => {
      
         <div className="flex">
           <span className="title-font font-medium text-2xl text-gray-900"> &#8377;{data?.product?.price}</span>
-          <button  onClick={()=>AddToCart(data?.product?._id)} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add To Cart</button>
-        
+          <button  disabled={AddToCartResponse.isLoading} onClick={()=>AddToCart(data?.product?._id)} className="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">{AddToCartResponse.isLoading?`loading...`:'Add To Cart'}</button>
         </div>
       </div>
     </div>
