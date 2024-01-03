@@ -6,6 +6,7 @@ import { AdminCategory } from "./query/AdminCategory.query";
 import { AdminProduct } from "./query/AdminProduct.query";
 import { PublicQuery } from "./query/public.query";
 import { CartApi } from "./query/cart.query";
+import { CheckoutQuery } from "./query/Checkout.query";
 import { UserSlice } from "./slice/User.slice";
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     [AdminProduct.reducerPath]: AdminProduct.reducer,
     [PublicQuery.reducerPath]: PublicQuery.reducer,
     [CartApi.reducerPath]: CartApi.reducer,
+    [CheckoutQuery.reducerPath]: CheckoutQuery.reducer,
   },
   middleware: (d) =>
     d().concat(
@@ -23,7 +25,8 @@ export const store = configureStore({
       AdminCategory.middleware,
       AdminProduct.middleware,
       PublicQuery.middleware,
-      CartApi.middleware
+      CartApi.middleware,
+      CheckoutQuery.middleware
     ),
 });
 

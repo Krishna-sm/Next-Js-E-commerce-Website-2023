@@ -9,3 +9,6 @@
 }
 
 
+.react-stars >span{
+    color: #fcba03 !important;
+}

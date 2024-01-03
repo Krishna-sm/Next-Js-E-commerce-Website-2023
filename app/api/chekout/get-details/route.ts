@@ -23,7 +23,7 @@ export const GET=async(request:NextRequest)=>{
                 user: user,
                 isPurchased:false
               })
-                .populate("product", "name price image.image_url")
+                .populate("product", " price ")
                 .select("qty");
 
               const totalPrice = CHeckExistCart.reduce((acc, item) => {
@@ -34,7 +34,7 @@ export const GET=async(request:NextRequest)=>{
             
            
         return NextResponse.json(
-          { msg: "Item fetched", cart: CHeckExistCart, totalPrice },
+          { msg: "checkout details fetched", totalPrice },
           {
             status: httpStatus.OK,
           }

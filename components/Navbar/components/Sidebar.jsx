@@ -5,6 +5,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import { CiCirclePlus,CiCircleMinus  } from "react-icons/ci";
 import { useEditCartMutation, useGetCartsQuery } from '@/provider/redux/query/cart.query';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 
 const ProductCard = ({image,qty,name,price,id,refetch})=>{
@@ -82,6 +83,10 @@ refetch()
                                     }
                                 
                                      
+                                     <div className="py-2 w-full">
+                                      <h1 className='text-xl text-white mx-auto text-center'>Total Price: &#8377;{data && data.totalPrice}/-</h1>
+                                      {data &&data.totalPrice>0 &&  <Link href="/checkout" className="bg-black w-full py-3 px-2 text-white">Checkout </Link>}
+                                     </div>
 
                                   {/* <div className='flex flex-col justify-center items-center py-10'>
                                    <HiOutlineShoppingCart className="text-9xl text-white" />

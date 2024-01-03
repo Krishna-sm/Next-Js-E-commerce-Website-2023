@@ -34,3 +34,24 @@ const totalPrice = data.reduce((acc, item) => {
 }, 0);
 
 console.log("Total Price:", totalPrice);
+
+
+
+const session = await stripe.checkout.sessions.create({
+  payment_method_types: ["card"],
+  mode: "payment",
+  line_items: [
+    {
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: "t-shirt",
+        },
+        unit_amount: totalPrice * 100,
+      },
+      quantity: 1,
+    },
+  ],
+  success_url: "http://localhost:3000/payment/sccuess",
+  cancel_url: "http://localhost:3000/payment/cancel",
+});

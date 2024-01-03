@@ -6,7 +6,7 @@ export const isAuth = async(request:NextRequest)=>{
     const token = await request.cookies.get("auth")
     if(!token){
                 // error
-                throw new ApiError(205," ");
+                throw new ApiError(200, " ");
     }
     const user = await VerifyToken(token.value);
     if(!user){
