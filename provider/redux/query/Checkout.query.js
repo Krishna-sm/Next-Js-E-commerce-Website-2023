@@ -14,11 +14,19 @@ export const CheckoutQuery = createApi({
         body:obj
       }),
     }),
+    checkPayment:builder.mutation({
+      query: (obj) => ({
+        url: `/verify-checkout`,
+        method: "POST",
+        body:{token:obj}
+      }),
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined AuthApi
 export const {
- useCheckoutPaymentMutation
+ useCheckoutPaymentMutation,
+ useCheckPaymentMutation
 } = CheckoutQuery;

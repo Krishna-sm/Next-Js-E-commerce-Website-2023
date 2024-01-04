@@ -26,6 +26,13 @@ export const PublicQuery = createApi({
         method: "GET",
       }),
     }),
+      searchQuery: builder.mutation({
+      query: (obj) => ({
+        url: `/search`,
+        method: "POST",
+        body:{slug: obj}
+      }),
+    }),
   }),
 });
 
@@ -34,5 +41,6 @@ export const PublicQuery = createApi({
 export const {
     useGetCategoriesQuery,
     useGetproductsQuery,
-    useGetproductQuery
+    useGetproductQuery,
+    useSearchQueryMutation
 } = PublicQuery;

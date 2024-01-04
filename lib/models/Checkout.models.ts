@@ -26,7 +26,7 @@ const Schema = new mongoose.Schema(
     products: {
       type: [
         {
-          product_id: {
+          product: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "product",
             
@@ -44,6 +44,10 @@ const Schema = new mongoose.Schema(
     isComplete:{
         type:Boolean,
         default:false
+    },
+    session_id:{
+          type:String,
+        default:null
     }
   },
   {
@@ -52,4 +56,4 @@ const Schema = new mongoose.Schema(
 );
 
 export const CheckoutModel =
-  mongoose.models.CheckoutDetails || mongoose.model("CheckoutDetails", Schema);
+  mongoose.models.CheckoutMod || mongoose.model("CheckoutMod", Schema);

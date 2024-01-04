@@ -63,6 +63,10 @@ const dispatch = useDispatch()
     if(!search){
       return
     }
+
+    
+
+
     router.push(`/search?query=${search}`)
   }
   // const isMobileNav = (d)=>{setIsOpen(d)}

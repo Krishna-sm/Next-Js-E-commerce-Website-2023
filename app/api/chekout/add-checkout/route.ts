@@ -33,6 +33,7 @@ export const POST = async (request: NextRequest) => {
 
         const CHeckExistCart = await CartModel.find({
           user: user,
+            isPurchased: false,
         }).select("product qty -_id");
    const check = await CartModel.find({
      user: user,
@@ -56,8 +57,7 @@ export const POST = async (request: NextRequest) => {
     //   user: user,
     //   products: CHeckExistCart,
     // };
-
-    const checkoutData = await CheckoutModel.create({
+   const checkoutData = await CheckoutModel.create({
       name: data.name,
       email: data.email,
       address: data.address,
@@ -65,9 +65,8 @@ export const POST = async (request: NextRequest) => {
       city: data.city,
       user: user,
       products: CHeckExistCart,
-      final_price: totalPrice,
+      final_price: totalPrice
     });
-
 
 
     const token = await generatePaymentToken(checkoutData._id);
@@ -96,10 +95,16 @@ export const POST = async (request: NextRequest) => {
     });
 
 
-console.log({ checkoutSession });
+      await CheckoutModel.findByIdAndUpdate(checkoutData._id,{
+        $set:{
+          session_id:checkoutSession.id
+        }
+    });
 
 
 
+
+ 
 
 
 

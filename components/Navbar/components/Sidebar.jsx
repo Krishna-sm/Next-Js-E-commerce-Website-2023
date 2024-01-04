@@ -71,6 +71,7 @@ refetch()
                                   <p className="text-xl font-bold">My Cart</p>
                                     <AiOutlineCloseCircle onClick={()=>state.isSidebarOpen(false)} className='cursor-pointer'/>
                                 </div>
+        {isLoading?'loading...':''}
                                 <ul className="">
                                     {
                                       data && data.cart && data.cart.length>0 ? data.cart.map((cur,i)=>{

@@ -28,6 +28,7 @@ export const POST=async(request:NextRequest)=>{
               const CHeckExistCart = await CartModel.findOne({
                 user: user,
                 product: id,
+                isPurchased:false
               });
               if (CHeckExistCart){
                 await CartModel.findByIdAndUpdate(CHeckExistCart._id, {
