@@ -1,11 +1,11 @@
 import { ConnectDB } from '@/lib/config/db.config';
 import { UserModel } from '@/lib/models/User.models';
 import { generateToken } from '@/lib/services/Token.service';
-import {NextResponse} from 'next/server'
+import {NextResponse,NextRequest} from 'next/server'
 
 ConnectDB();
 
-export const POST=async(request)=>{
+export const POST=async(request:NextRequest)=>{
     try {
         
         const {email,password} = await request.json();
